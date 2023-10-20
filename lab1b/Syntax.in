@@ -1,0 +1,31 @@
+program = stmtlist
+
+declstmt =type " " IDENTIFIER | type " " IDENTIFIER "[" nr "]"
+
+type = "char" | "int" | "string" 
+
+stmtlist = stmt | stmt ";" stmtlist
+
+stmt = simplstmt | structstmt
+
+simplstmt = assignstmt | iostmt | declstmt
+
+assignstmt = IDENTIFIER "=" expression
+
+expression = expression ("+" | "-") term | term
+
+term = term ("*" | "/") factor | factor
+
+factor = "(" expression ")" | IDENTIFIER
+
+iostmt = ("READ" | "WRITE") "(" (IDENTIFIER | no | constchar | conststring) ")"
+
+structstmt = cmpdstmt | ifstmt | whilestmt
+
+ifstmt = "IF" condition "{" stmt "}" ["ELSE" "{ "stmt" }"]
+
+whilestmt = "WHILE" condition "{" stmt "}"
+
+condition = expression RELATION expression
+
+RELATION = "<" | "<=" | "==" | "<>" | ">=" | ">"

@@ -1,0 +1,18 @@
+identifier = letter{letter | digit | "_"}
+
+letter = "A" | "B" | . ..| "Z" | "a" | "b" | ... | "z"
+
+digit = "0" | "1" |...| "9"
+
+noconst:="+"no|"-"no|no
+
+no:=digit{no}
+
+character=letter|digit
+
+constchar="""string"""
+
+string=char{string}
+
+char=letter|digit
+

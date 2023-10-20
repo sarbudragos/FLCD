@@ -1,0 +1,11 @@
+I did code review for Alin Stanciu : https://github.com/Alin-St/FCLD/tree/main/lab1b
+
+It seems like a mix between C and pseudoCode
+
+No char or string type.
+
+Extensive usage of blank not needed?
+
+No parenthesies in arithmetic operations
+
+Code is good overall.
