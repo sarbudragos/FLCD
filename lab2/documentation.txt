@@ -1,0 +1,6 @@
+https://github.com/sarbudragos/FLCD
+
+I used a hash table for the symbol table. That is because it has an O(n/TABLE_SIZE) search complexity with TABLE_SIZE being a really large number.
+For The hash function I simply add the ASCII codes for the characters and then mod the result by TABLE_SIZE.
+I only have one member function called add that only adds the given token if it is not already in the table.
+The function returns a pair representing the position of the token in the table.
