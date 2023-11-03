@@ -1,0 +1,19 @@
+github.com/sarbudragos/FLCD
+
+For the PIF - I used a vector that stored a pair of string(the token) and pair of int and int(the position in the hash table)
+
+The splitting was done based on the following regex:
+"((,)|(\\+)|(\\-)|(\\*)|(\\/)|(=)|(<)|(>)|(<=)|(==)|(>=)|(\\[)|(\\])|(\\()|(\\))|(;)|(\\{)|(\\})|(:)|(])|( ))"
+This regex matches all separators.
+
+The regex for matching identifiers is:
+"[a-zA-Z][a-zA-Z0-9_]*"
+An identifier can only contain letters, numbers and underscore but it must start with a letter.
+
+For numerical constants:
+"([1-9][0-9]*)|0"
+Numerical constants are unsigned and - used for negative numbers is a unary operator.
+
+For string literals:
+"\"[a-zA-Z0-9]*\""
+String literals can not contain spaces or any other separators.
