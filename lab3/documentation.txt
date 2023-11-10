@@ -2,8 +2,13 @@ github.com/sarbudragos/FLCD
 
 For the PIF - I used a vector that stored a pair of string(the token) and pair of int and int(the position in the hash table)
 
+I used a hash table for the symbol table. That is because it has an O(n/TABLE_SIZE) search complexity with TABLE_SIZE being a really large number.
+For The hash function I simply add the ASCII codes for the characters and then mod the result by TABLE_SIZE.
+I only have one member function called add that only adds the given token if it is not already in the table.
+The function returns a pair representing the position of the token in the table.
+
 The splitting was done based on the following regex:
-"((,)|(\\+)|(\\-)|(\\*)|(\\/)|(=)|(<)|(>)|(<=)|(==)|(>=)|(\\[)|(\\])|(\\()|(\\))|(;)|(\\{)|(\\})|(:)|(])|( ))"
+"((,)|(\\+)|(\\-)|(\\*)|(\\/)|(<=)|(==)|(>=)|(=)|(<)|(>)|(\\[)|(\\])|(\\()|(\\))|(;)|(\\{)|(\\})|(:)|(])|( ))"
 This regex matches all separators.
 
 The regex for matching identifiers is:

@@ -94,7 +94,7 @@ std::vector<std::string> getProgramTokens(char* filename)
 
     std::getline(programFile, programString, '\0');
 
-    std::regex reg("((,)|(\\+)|(\\-)|(\\*)|(\\/)|(=)|(<)|(>)|(<=)|(==)|(>=)|(\\[)|(\\])|(\\()|(\\))|(;)|(\\{)|(\\})|(:)|(])|( ))");
+    std::regex reg("((,)|(\\+)|(\\-)|(\\*)|(\\/)|(<=)|(==)|(>=)|(=)|(<)|(>)|(\\[)|(\\])|(\\()|(\\))|(;)|(\\{)|(\\})|(:)|(])|( ))");
     std::sregex_token_iterator srti(programString.begin(), programString.end(), reg, {-1, 0});
     
     std::remove_copy_if(srti, std::sregex_token_iterator(), 
