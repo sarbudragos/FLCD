@@ -6,6 +6,8 @@
 #include<algorithm>
 #include<fstream>
 #include<regex>
+#include<map>
+#include<sstream>
 
 class ProgramInternalForm
 {
@@ -86,6 +88,107 @@ public:
 
 };
 
+class FiniteAutomaton{
+
+    std::vector<std::string> states;
+    std::string initialState;
+    std::vector<std::string> finalStates;
+    std::vector<std::string> alphabet;
+    std::map<std::string, std::vector<std::pair<std::string, std::string>>> transitionFunction;
+
+    void readFromFile(std::string fileName){
+        std::fstream file(fileName);
+        std::string lineBuffer;
+        std::string tokenBuffer;
+        std::getline(file, lineBuffer);
+        std::stringstream bufferStream(lineBuffer);
+        std::string state1, transition, state2;
+
+        while(bufferStream >> tokenBuffer){
+            states.push_back(tokenBuffer);
+        }
+
+        lineBuffer.clear();
+        std::getline(file, lineBuffer);
+        initialState = lineBuffer;
+
+        lineBuffer.clear();
+        std::getline(file, lineBuffer);
+        bufferStream = std::stringstream(lineBuffer);
+        while(bufferStream >> tokenBuffer){
+            finalStates.push_back(tokenBuffer);
+        }
+
+        lineBuffer.clear();
+        std::getline(file, lineBuffer);
+        bufferStream = std::stringstream(lineBuffer);
+        while(bufferStream >> tokenBuffer){
+            alphabet.push_back(tokenBuffer);
+        }
+
+        while(std::getline(file, lineBuffer)){
+            bufferStream = std::stringstream(lineBuffer);
+
+            bufferStream >> state1 >> transition >> state2;
+
+            transitionFunction[state1].push_back(std::make_pair(transition, state2));
+        }
+
+    }
+
+public:
+
+    FiniteAutomaton(std::string fileName){
+        readFromFile(fileName);
+    }
+
+    std::vector<std::string> getStates(){
+        return states;
+    }
+
+    std::string getInitialState(){
+        return initialState;
+    }
+
+    std::vector<std::string> getFinalStates(){
+        return finalStates;
+    }
+
+    std::vector<std::string> getAlphabet(){
+        return alphabet;
+    }
+
+    std::map<std::string, std::vector<std::pair<std::string, std::string>>> getTransitionFunction(){
+        return transitionFunction;
+    }
+    
+
+    bool isAccepted(std::vector<std::string> input){
+        std::string currentState = initialState;
+        
+        for(int i=0; i<input.size();i++){
+            auto currentTransitionList = transitionFunction[currentState];
+            auto nextTransition = std::find_if(currentTransitionList.begin(), 
+                currentTransitionList.end(), 
+                [&input, i](auto x){ 
+                    return x.first == input[i];
+                }
+            );
+            if(nextTransition == currentTransitionList.end()){
+                return false;
+            }
+            currentState = (*nextTransition).second;
+        }
+        if(std::find(finalStates.begin(), finalStates.end(), currentState) != finalStates.end()){
+            return true;
+        }
+
+        return false;
+    }
+
+
+};
+
 std::vector<std::string> getProgramTokens(char* filename)
 {
     std::ifstream programFile(filename);
@@ -127,13 +230,30 @@ std::vector<std::string> getSpecialTokens(char* filename)
 
 bool isIdentifier(std::string token)
 {
-    return std::regex_match(token, std::regex("[a-zA-Z][a-zA-Z0-9_]*"));
+    FiniteAutomaton identifierFiniteAutomaton("identifierFA.in");
+    std::vector<std::string> v;
+    for (auto c : token){
+        v.push_back(std::string{c});
+    }
+
+    return identifierFiniteAutomaton.isAccepted(v);
+
+    //return std::regex_match(token, std::regex("[a-zA-Z][a-zA-Z0-9_]*"));
 }
 
 bool isConstant(std::string token)
 {
-    return std::regex_match(token, std::regex("([1-9][0-9]*)|0")) ||
+    FiniteAutomaton identifierFiniteAutomaton("integerConstantFA.in");
+    std::vector<std::string> v;
+    for (auto c : token){
+        v.push_back(std::string{c});
+    }
+
+    return identifierFiniteAutomaton.isAccepted(v) ||
         std::regex_match(token, std::regex("\"[a-zA-Z0-9]*\""));
+
+    //return std::regex_match(token, std::regex("([1-9][0-9]*)|0")) ||
+        //std::regex_match(token, std::regex("\"[a-zA-Z0-9]*\""));
 }
 
 //Documentation: class diagram, regex explanation, pif data structure explanation
