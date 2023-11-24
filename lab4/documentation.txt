@@ -1,0 +1,24 @@
+finiteAutomaton = states "\n" initialState "\n" finalStates "\n" alphabet "\n" transitionFunction
+
+nonZeroDigit= "1" | ... | "9"
+
+digit = "0" | nonZeroDigit
+
+number = "0" | nonZeroDigit {number}
+
+state = "p" number
+
+states = {state" "}state
+
+initialState = state
+
+finalStates = {state" "}state
+
+token = "a" | ... | "z" | "A" | ... | "Z" | digit | "_"
+
+alphabet = {token" "}token
+
+transition = state " " token " " state
+
+transitionFunction = {transition"\n"}transition
+
